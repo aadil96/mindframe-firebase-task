@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/login', [LoginController::class, 'show'])->name('login');
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 Route::post('/login', [LoginController::class, 'login']);
+
 Route::get('/', [TaskController::class, 'index'])->name('task.index');
 Route::post('/store', [TaskController::class, 'store'])->name('task.store');
 Route::delete('/delete/{key}', [TaskController::class, 'delete'])->name('task.delete');
