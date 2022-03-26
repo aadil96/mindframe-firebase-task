@@ -14,6 +14,10 @@ class LoginController extends Controller
 
     public function show()
     {
+        if (session()->has('firebase_user_id')) {
+            return redirect()->route('task.index');
+        }
+
         return view('auth.login');
     }
 
@@ -26,8 +30,9 @@ class LoginController extends Controller
 
         try {
             $s = $this->auth->signInWithEmailAndPassword($request->email, $request->password);
-            session()->put('firebase_user_id', $s->firebaseUserId());
-            session()->put('firebase_token', $s->idToken());
+            session(['firebase_user_id' => $s->firebaseUserId()]);
+            session(['firebase_token' => $s->idToken()]);
+            session(['firebase_data' => $s->data()]);
             return redirect()->route('task.index');
         } catch (\Exception $e) {
             Log::error($e->getMessage());
@@ -43,8 +48,10 @@ class LoginController extends Controller
 
         try {
             $this->auth->verifyIdToken(session('firebase_token'), true);
-
         } catch (\Exception $e) {
+            session()->forget('firebase_user_id');
+            session()->forget('firebase_token');
+            session()->forget('firebase_data');
             return redirect()->route('login');
         }
     }

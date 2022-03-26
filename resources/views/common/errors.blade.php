@@ -1,4 +1,3 @@
-
 @if ($errors->any())
     <!-- Form Error List -->
     <div class="alert alert-danger">

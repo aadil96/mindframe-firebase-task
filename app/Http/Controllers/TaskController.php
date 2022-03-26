@@ -11,6 +11,7 @@ class TaskController extends Controller
     public function __construct()
     {
         $this->database = app('firebase.database');
+        $this->middleware('firebase');
     }
 
     public function index()
@@ -23,7 +24,6 @@ class TaskController extends Controller
     public function store(Request $request)
     {
         $request->validate(['name' => 'required|string|max:255']);
-
         $this->database->getReference('tasks')->push([
             'name' => $request->name,
         ]);

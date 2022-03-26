@@ -51,22 +51,22 @@
                 <!-- Right Side Of Navbar -->
                 <ul class="nav navbar-nav navbar-right">
                     <!-- Authentication Links -->
-                    @php
-                        $auth = app('firebase.auth');
-                        // $user = $auth->verifyIdToken(session()->get('firebase_token'), true);
-                        // $user = $auth->idToken();
-                        // dd($auth, session()->get('firebase_token'), $user);
-                    @endphp
-                    @if (Auth::guest())
+
+
+                    @if (!session()->has('firebase_user_id'))
                         <li><a href="{{ route('login') }}">Login</a></li>
                     @else
+                        @php
+                            $user = app('firebase.auth')->getUser(session('firebase_user_id'));
+
+                        @endphp
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                                {{ Auth::user()->name }} <span class="caret"></span>
+                                {{ $user->email }} <span class="caret"></span>
                             </a>
 
                             <ul class="dropdown-menu" role="menu">
-                                <li><a href="{{ url('/logout') }}"><i class="fa fa-btn fa-sign-out"></i>Logout</a></li>
+                                <li><a href="{{ route('logout') }}"><i class="fa fa-btn fa-sign-out"></i>Logout</a></li>
                             </ul>
                         </li>
                     @endif
