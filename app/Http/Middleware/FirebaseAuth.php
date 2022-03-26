@@ -17,7 +17,7 @@ class FirebaseAuth
     public function handle(Request $request, Closure $next)
     {
         return !session()->has('firebase_user_id') ?
-            route('login') :
+            redirect()->route('login') :
             $next($request);
     }
 }
