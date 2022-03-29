@@ -30,8 +30,8 @@ class LoginController extends Controller
 
         try {
             $s = $this->auth->signInWithEmailAndPassword($request->email, $request->password);
-            session(['firebase_user_id' => $s->firebaseUserId()]);
             session(['firebase_token' => $s->idToken()]);
+            session(['firebase_user_id' => $s->firebaseUserId()]);
             session(['firebase_data' => $s->data()]);
             return redirect()->route('task.index');
         } catch (\Exception $e) {
